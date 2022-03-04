@@ -60,8 +60,6 @@ spec:
               value: {{ .Values.tracing.jaeger.agent.host | quote }}
             - name: OPENTRACING_JAEGER_UDP_SENDER_PORT
               value: {{ .Values.tracing.jaeger.agent.port | quote }}
-            - name: OPENTRACING_JAEGER_LOGSPANS
-              value: {{ .Values.tracing.jaeger.logSpans | quote }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

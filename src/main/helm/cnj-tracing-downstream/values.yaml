@@ -105,4 +105,3 @@ tracing:
     agent:
       host: jaeger-agent.tracing
       port: 6831
-    logSpans: true
