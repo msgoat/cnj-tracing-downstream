@@ -9,7 +9,7 @@
     <description>Cloud native Java application based on Spring Boot acting as a downstream service consumed by the other backends</description>
     <properties>
         <!-- new Maven version management -->
-        <revision>2.0.0</revision>
+        <revision>2.1.0</revision>
         <sha1></sha1>
         <changelist></changelist>
         <!-- common properties -->
@@ -17,10 +17,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- runtime related properties -->
         <java.version>11</java.version>
-        <spring.boot.version>2.6.4</spring.boot.version>
+        <spring.boot.version>2.7.1</spring.boot.version>
+        <start-class>group.msg.at.cloud.cloudtrain.SpringDownstreamApplication</start-class>
         <!-- common logging dependencies -->
-        <slf4j.version>1.7.32</slf4j.version>
-        <logstash.logback.encoder.version>6.1</logstash.logback.encoder.version>
+        <logstash.logback.encoder.version>7.2</logstash.logback.encoder.version>
         <!-- common test dependencies -->
         <junit.version>5.8.1</junit.version>
         <restassured.version>4.4.0</restassured.version>
@@ -29,7 +29,7 @@
         <!-- common security dependencies -->
         <common.security.version>1.2.0</common.security.version>
         <!-- common monitoring dependencies -->
-        <micrometer.version>1.5.5</micrometer.version>
+        <micrometer.version>1.9.1</micrometer.version>
         <!-- common tracing dependencies -->
         <spring.opentracing.version>3.2.0</spring.opentracing.version>
         <!-- docker related properties -->
@@ -151,7 +151,7 @@
         <dependency>
             <groupId>group.msg.at.cloud.common</groupId>
             <artifactId>cnj-common-observability-spring</artifactId>
-            <version>0.2.0</version>
+            <version>0.4.0</version>
         </dependency>
         <!-- showcase specific section -->
         <dependency>
@@ -289,6 +289,8 @@
                     </executions>
                     <configuration>
                         <mainClass>${start-class}</mainClass>
+                        <classifier>spring</classifier>
+                        <attach>false</attach>
                     </configuration>
                 </plugin>
                 <!-- cloud native specific maven plugins section -->
@@ -452,7 +454,7 @@
                                         <resource>
                                             <directory>${project.build.directory}</directory>
                                             <includes>
-                                                <include>*.jar</include>
+                                                <include>*-spring.jar</include>
                                             </includes>
                                         </resource>
                                     </resources>
@@ -634,7 +636,7 @@
                                         <resource>
                                             <directory>${project.build.directory}</directory>
                                             <includes>
-                                                <include>*.jar</include>
+                                                <include>*-spring.jar</include>
                                             </includes>
                                         </resource>
                                     </resources>

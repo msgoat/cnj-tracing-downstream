@@ -17,9 +17,9 @@ ENV JAVA_APPLICATION_HOME=${ARG_JAVA_APPLICATION_HOME} \
     JAVA_APPLICATION=${ARG_JAVA_APPLICATION} \
     JAVA_APPLICATION_HOME=${ARG_JAVA_APPLICATION_HOME}
 
-RUN echo "adding run user spring to system" \
-    && addgroup -S spring -g 1000 \
-    && adduser -S spring -u 1000 -G spring
+RUN echo "adding run user spring to system" && \
+    addgroup -S spring -g 1000 && \
+    adduser -S spring -u 1000 -G spring
 
 COPY docker-entrypoint.sh /
 COPY *.jar ${ARG_JAVA_APPLICATION_HOME}/
