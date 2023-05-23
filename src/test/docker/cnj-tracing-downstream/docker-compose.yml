@@ -19,8 +19,8 @@ services:
     environment:
       AGENT_JAVA_OPTS: "-javaagent:/home/spring/org.jacoco.agent.jar=output=tcpserver,address=*,port=8089"
       DOCKER_JAVA_OPTS: "-Xms1g -Xmx1g"
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: https://oidc.cloudtrain.aws.msgoat.eu/auth/realms/cloudtrain/protocol/openid-connect/certs
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://oidc.cloudtrain.aws.msgoat.eu/auth/realms/cloudtrain
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: https://oidc.cloudtrain.aws.msgoat.eu/realms/cloudtrain/protocol/openid-connect/certs
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://oidc.cloudtrain.aws.msgoat.eu/realms/cloudtrain
     depends_on:
       - jaeger
 
