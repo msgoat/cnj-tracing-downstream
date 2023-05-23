@@ -9,7 +9,7 @@
     <description>Cloud native Java application based on Spring Boot acting as a downstream service consumed by the other backends</description>
     <properties>
         <!-- new Maven version management -->
-        <revision>2.1.0</revision>
+        <revision>2.2.0</revision>
         <sha1></sha1>
         <changelist></changelist>
         <!-- common properties -->

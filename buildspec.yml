@@ -37,10 +37,10 @@ phases:
         if [ "$CLOUDTRAIN_EKS_DEPLOY_ENABLED" == "true" ]
         then
           echo "Authenticate on EKS"
-          aws eks update-kubeconfig --name $CLOUDTRAIN_EKS_CLUSTER_NAME --role $CLOUDTRAIN_EKS_ROLE_ARN
+          aws eks update-kubeconfig --name $CLOUDTRAIN_EKS_CLUSTER_NAME
           kubectl cluster-info
           echo "Running integration-test-stage of the build"
-          mvn clean verify -f pom.xml -B -ff -e -V -U -P integration-test-stage -Dchangelist=.${CODEBUILD_WEBHOOK_HEAD_REF:11} -Dsha1=.${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}
+          mvn clean verify -f pom.xml -B -ff -e -V -U -P integration-test-stage -Dchangelist=.${CODEBUILD_WEBHOOK_HEAD_REF:11} -Dsha1=.${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8} -Dk8s.cluster.namespace=$CLOUDTRAIN_EKS_NAMESPACE -Dk8s.ingress.host=$CLOUDTRAIN_EKS_INGRESS_HOST
         fi
   post_build:
     commands:
