@@ -9,29 +9,30 @@
     <description>Cloud native Java application based on Spring Boot acting as a downstream service consumed by the other backends</description>
     <properties>
         <!-- new Maven version management -->
-        <revision>2.2.0</revision>
-        <sha1></sha1>
-        <changelist></changelist>
+        <revision>3.0.0</revision>
+        <sha1>.12345678</sha1>
+        <changelist>.LOCAL</changelist>
         <!-- common properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- runtime related properties -->
-        <java.version>11</java.version>
-        <spring.boot.version>2.7.1</spring.boot.version>
+        <java.version>17</java.version>
+        <spring.boot.version>3.0.2</spring.boot.version>
         <start-class>group.msg.at.cloud.cloudtrain.SpringDownstreamApplication</start-class>
         <!-- common logging dependencies -->
         <logstash.logback.encoder.version>7.2</logstash.logback.encoder.version>
         <!-- common test dependencies -->
-        <junit.version>5.8.1</junit.version>
-        <restassured.version>4.4.0</restassured.version>
-        <cnj.common.test.version>3.0.1</cnj.common.test.version>
+        <junit.version>5.9.2</junit.version>
+        <restassured.version>5.2.1</restassured.version>
+        <cnj.common.test.core.version>1.0.0</cnj.common.test.core.version>
+        <cnj.common.test.jakarta.version>1.0.0</cnj.common.test.jakarta.version>
         <!-- common persistence dependencies -->
         <!-- common security dependencies -->
-        <common.security.version>1.2.0</common.security.version>
+        <common.security.version>2.0.0</common.security.version>
         <!-- common monitoring dependencies -->
         <micrometer.version>1.9.1</micrometer.version>
         <!-- common tracing dependencies -->
-        <spring.opentracing.version>3.2.0</spring.opentracing.version>
+        <spring.opentracing.version>3.3.1</spring.opentracing.version>
         <!-- docker related properties -->
         <docker.registry.name>docker.cloudtrain.aws.msgoat.eu</docker.registry.name>
         <docker.organization.name>cloudtrain</docker.organization.name>
@@ -63,7 +64,7 @@
         <!-- pinning versions of application type specific maven plugins -->
         <maven.spring.boot.plugin.version>${spring.boot.version}</maven.spring.boot.plugin.version>
         <!-- pinning versions of cloud native specific maven plugins -->
-        <maven.compose.plugin.version>3.0.0</maven.compose.plugin.version>
+        <maven.compose.plugin.version>4.0.0</maven.compose.plugin.version>
         <maven.docker.plugin.version>0.37.0</maven.docker.plugin.version>
         <maven.helm.plugin.version>4.0.0</maven.helm.plugin.version>
         <!-- quality assurance properties -->
@@ -134,11 +135,6 @@
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>group.msg.at.cloud.common</groupId>
-            <artifactId>cnj-common-security-oidc-spring</artifactId>
-            <version>${common.security.version}</version>
-        </dependency>
-        <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
             <version>${logstash.logback.encoder.version}</version>
@@ -151,13 +147,13 @@
         <dependency>
             <groupId>group.msg.at.cloud.common</groupId>
             <artifactId>cnj-common-observability-spring</artifactId>
-            <version>0.4.0</version>
+            <version>1.0.0</version>
         </dependency>
         <!-- showcase specific section -->
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
-            <version>${spring.opentracing.version}</version>
+            <version> ${spring.opentracing.version}</version>
         </dependency>
         <!-- =========================== -->
         <!-- test time dependencies      -->
@@ -170,13 +166,13 @@
         <dependency>
             <groupId>group.msg.at.cloud.common</groupId>
             <artifactId>cnj-common-test-core</artifactId>
-            <version>0.9.0</version>
+            <version>1.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>group.msg.at.cloud.common</groupId>
             <artifactId>cnj-common-test-jakarta</artifactId>
-            <version>0.1.0</version>
+            <version>1.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
