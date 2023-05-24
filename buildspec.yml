@@ -36,8 +36,9 @@ phases:
     on-failure: ABORT
     commands:
       - echo "Running phase build"
-      - echo "Running commit-stage of the build using branch [${CODEBUILD_WEBHOOK_HEAD_REF:11}] and short commit hash [${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}]"
-      - mvn clean install -f pom.xml -B -ff -e -V -U -P commit-stage -Dchangelist=.${CODEBUILD_WEBHOOK_HEAD_REF:11} -Dsha1=.${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8} -Dsonar.login=$SONARQUBE_TOKEN
+      - export BRANCH=main
+      - echo "Running commit-stage of the build using branch [$BRANCH] and short commit hash [${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}]"
+      - mvn clean install -f pom.xml -B -ff -e -V -U -P commit-stage -Dchangelist=.$BRANCH -Dsha1=.${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8} -Dsonar.login=$SONARQUBE_TOKEN
       - |-
         if [ "$CLOUDTRAIN_EKS_DEPLOY_ENABLED" == "true" ]
         then
@@ -45,7 +46,7 @@ phases:
           aws eks update-kubeconfig --name $CLOUDTRAIN_EKS_CLUSTER_NAME
           kubectl cluster-info
           echo "Running integration-test-stage of the build"
-          mvn clean verify -f pom.xml -B -ff -e -V -U -P integration-test-stage -Dchangelist=.${CODEBUILD_WEBHOOK_HEAD_REF:11} -Dsha1=.${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8} -Dk8s.cluster.namespace=$CLOUDTRAIN_EKS_NAMESPACE -Dk8s.ingress.host=$CLOUDTRAIN_EKS_INGRESS_HOST
+          mvn clean verify -f pom.xml -B -ff -e -V -U -P integration-test-stage -Dchangelist=.$BRANCH -Dsha1=.${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8} -Dk8s.cluster.namespace=$CLOUDTRAIN_EKS_NAMESPACE -Dk8s.ingress.host=$CLOUDTRAIN_EKS_INGRESS_HOST
         fi
   post_build:
     commands:
