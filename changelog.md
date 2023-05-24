@@ -6,11 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.0] - 2023-05-23
+## [3.0.0] - 2023-05-24
 ### Changed
 - upgraded to Java 17
 - upgraded to Spring Boot version 3.0.2
 - moved to new CloudTrain kubernetes cluster
+- switched to new docker base image cnj-docker-jre17-alpine
 
 ## [2.1.0] - 2022-08-26
 ### Added
