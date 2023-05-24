@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - upgraded to Spring Boot version 3.0.2
 - moved to new CloudTrain kubernetes cluster
 - switched to new docker base image cnj-docker-jre17-alpine
+- improved ingress management in helm chart with added nginx support
+- switched to nginx ingress controller
 
 ## [2.1.0] - 2022-08-26
 ### Added
