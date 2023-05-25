@@ -56,7 +56,8 @@ ingress:
   host: "${k8s.ingress.host}"
   path: "${k8s.ingress.path}"
   pathType: Prefix
-  annotations: {}
+  annotations:
+    nginx.ingress.kubernetes.io/enable-opentracing: "true"
 
 autoscaling:
   enabled: false
