@@ -20,17 +20,17 @@
         <spring.boot.version>3.0.2</spring.boot.version>
         <start-class>group.msg.at.cloud.cloudtrain.SpringDownstreamApplication</start-class>
         <!-- common logging dependencies -->
-        <logstash.logback.encoder.version>7.2</logstash.logback.encoder.version>
+        <logstash.logback.encoder.version>7.3</logstash.logback.encoder.version>
         <!-- common test dependencies -->
         <junit.version>5.9.2</junit.version>
         <restassured.version>5.2.1</restassured.version>
         <cnj.common.test.core.version>1.1.0</cnj.common.test.core.version>
         <cnj.common.test.jakarta.version>1.0.0</cnj.common.test.jakarta.version>
-        <!-- common persistence dependencies -->
         <!-- common security dependencies -->
-        <common.security.version>2.0.0</common.security.version>
+        <cnj.common.security.version>2.0.0</cnj.common.security.version>
+        <!-- common persistence dependencies -->
         <!-- common monitoring dependencies -->
-        <micrometer.version>1.9.1</micrometer.version>
+        <micrometer.version>1.10.3</micrometer.version>
         <!-- common tracing dependencies -->
         <spring.opentracing.version>3.3.1</spring.opentracing.version>
         <!-- docker related properties -->
@@ -135,6 +135,11 @@
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
         <dependency>
+            <groupId>group.msg.at.cloud.common</groupId>
+            <artifactId>cnj-common-security-oidc-spring</artifactId>
+            <version>${cnj.common.security.version}</version>
+        </dependency>
+        <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
             <version>${logstash.logback.encoder.version}</version>
@@ -166,13 +171,13 @@
         <dependency>
             <groupId>group.msg.at.cloud.common</groupId>
             <artifactId>cnj-common-test-core</artifactId>
-            <version>1.0.0</version>
+            <version>${cnj.common.test.core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>group.msg.at.cloud.common</groupId>
             <artifactId>cnj-common-test-jakarta</artifactId>
-            <version>1.0.0</version>
+            <version>${cnj.common.test.jakarta.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
