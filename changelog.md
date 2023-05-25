@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.0] - 2023-05-24
+## [3.0.0] - 2023-05-25
 ### Changed
 - upgraded to Java 17
 - upgraded to Spring Boot version 3.0.2
