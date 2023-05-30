@@ -101,7 +101,5 @@ metrics:
 # tracing configuration
 tracing:
   enabled: true
-  jaeger:
-    agent:
-      host: trace-jaeger-agent.tracing
-      port: 6831
+  opentelemetry:
+    endpoint: http://trace-jaeger-collector:4318/v1/traces
