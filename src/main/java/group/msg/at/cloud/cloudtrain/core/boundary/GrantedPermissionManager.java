@@ -3,12 +3,11 @@ package group.msg.at.cloud.cloudtrain.core.boundary;
 import group.msg.at.cloud.cloudtrain.core.control.PermissionRepository;
 import group.msg.at.cloud.cloudtrain.core.entity.GrantedPermission;
 import group.msg.at.cloud.cloudtrain.core.entity.Permission;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +18,11 @@ import java.util.List;
 @Secured("CLOUDTRAIN_USER")
 public class GrantedPermissionManager {
 
-    @Autowired
-    private PermissionRepository repository;
+    private final PermissionRepository repository;
+
+    public GrantedPermissionManager(@NotNull PermissionRepository repository) {
+        this.repository = repository;
+    }
 
     public List<GrantedPermission> getGrantedPermissionsByCurrentUser() {
         List<GrantedPermission> result = new ArrayList<>();

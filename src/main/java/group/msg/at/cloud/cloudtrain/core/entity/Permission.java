@@ -1,6 +1,7 @@
 package group.msg.at.cloud.cloudtrain.core.entity;
 
 import jakarta.validation.constraints.NotNull;
+
 import java.util.Objects;
 
 /**
@@ -16,13 +17,6 @@ public class Permission {
 
     @NotNull
     private String userName;
-
-    /**
-     * Default constructor for JSON-B.
-     */
-    public Permission() {
-
-    }
 
     public Permission(@NotNull String permissionName, @NotNull String resourceQualifier, @NotNull String userName) {
         this.permissionName = permissionName;

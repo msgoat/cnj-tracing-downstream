@@ -4,7 +4,19 @@ All notable changes to `cnj-tracing-downstream` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [Unreleased] - YYYY-MM-DD
+### Added
+### Changed
+### Fixed
+
+## [3.2.0] - 2023-11-07
+### Changed
+- Consolidated all Maven plugins
+- Upgraded all Maven plugins
+- Upgraded to Spring Boot 3.1.5 and upgraded all related dependencies
+- Upgraded cnj-common-observability-spring to version 1.2.0
+- Removed dependency on cnj-common-test-jakarta by using actual model in tests
+- Removed some SonarQube issues
 
 ## [3.1.0] - 2023-05-26
 ### Changed

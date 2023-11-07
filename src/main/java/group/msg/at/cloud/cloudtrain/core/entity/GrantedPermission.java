@@ -1,14 +1,23 @@
 package group.msg.at.cloud.cloudtrain.core.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class GrantedPermission {
 
-    private String permission;
+    private final String permission;
 
     public GrantedPermission(Permission permission) {
         this.permission = permission.getPermissionName();
+    }
+
+    /**
+     * Special constructor for JSON binding only.
+     *
+     * @param permission permission name
+     */
+    @JsonCreator
+    GrantedPermission(String permission) {
+        this.permission = permission;
     }
 
     public String getPermission() {
