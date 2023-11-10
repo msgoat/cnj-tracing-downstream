@@ -9,7 +9,7 @@
     <description>Cloud native Java application based on Spring Boot acting as a downstream service consumed by the other backends</description>
     <properties>
         <!-- new Maven version management -->
-        <revision>3.2.0</revision>
+        <revision>3.3.0</revision>
         <sha1>.12345678</sha1>
         <changelist>.LOCAL</changelist>
         <!-- common properties -->
@@ -43,7 +43,7 @@
         <!-- kubernetes related properties -->
         <k8s.cluster.route>https://${k8s.ingress.host}</k8s.cluster.route>
         <k8s.cluster.namespace>cloudtrain</k8s.cluster.namespace>
-        <k8s.ingress.host>apps.cloudtrain.aws.msgoat.eu</k8s.ingress.host>
+        <k8s.ingress.host>train2023-dev.k8s.cloudtrain.aws.msgoat.eu</k8s.ingress.host>
         <k8s.ingress.path>/${k8s.cluster.namespace}/${project.artifactId}</k8s.ingress.path>
         <k8s.test.target.route>${k8s.cluster.route}${k8s.ingress.path}</k8s.test.target.route>
         <!-- pinning versions of application type specific maven plugins -->
@@ -69,7 +69,7 @@
         <maven.war.plugin.version>3.4.0</maven.war.plugin.version>
         <!-- pinning versions of custom maven plugins -->
         <maven.compose.plugin.version>5.0.0</maven.compose.plugin.version>
-        <maven.helm.plugin.version>4.0.0</maven.helm.plugin.version>
+        <maven.helm.plugin.version>5.0.0</maven.helm.plugin.version>
         <!-- quality assurance properties -->
         <sonar.host.url>https://sonarqube.cloudtrain.aws.msgoat.eu</sonar.host.url>
         <jacoco.address>localhost</jacoco.address>
@@ -365,53 +365,6 @@
         </resources>
     </build>
     <profiles>
-        <!-- profile local-stage -->
-        <!-- supposed to be run during local development -->
-        <!-- builds application and runs it -->
-        <profile>
-            <id>local-stage</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/*SystemTest.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>repackage</id>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                            <execution>
-                                <id>run-spring-application</id>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <profiles>
-                                        <profile>test</profile>
-                                    </profiles>
-                                    <systemPropertyVariables>
-                                        <cloudtrain.services.downstream.url>http://localhost:38090</cloudtrain.services.downstream.url>
-                                    </systemPropertyVariables>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <!-- profile pre-commit-stage representing pre-commit-stage of local build -->
         <!-- supposed to be run before each push to the central GIT repository -->
         <!-- builds application; runs unit tests on application; builds docker image; runs system tests on docker container -->
@@ -472,6 +425,22 @@
                                         </resource>
                                     </resources>
                                     <outputDirectory>${project.build.directory}/compose-resources/${project.artifactId}</outputDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>copy-helm-resources</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/main/helm/${project.artifactId}</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                    <outputDirectory>${project.build.directory}/helm-resources/${project.artifactId}</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
@@ -592,6 +561,22 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>group.msg.at.cloud.tools</groupId>
+                        <artifactId>helm-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>helm-lint</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>lint</goal>
+                                </goals>
+                                <configuration>
+                                    <chartDirectory>${project.build.directory}/helm-resources/${project.artifactId}</chartDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -656,6 +641,22 @@
                                     <outputDirectory>${project.build.directory}/compose-resources/${project.artifactId}</outputDirectory>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>copy-helm-resources</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/main/helm/${project.artifactId}</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                    <outputDirectory>${project.build.directory}/helm-resources/${project.artifactId}</outputDirectory>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
                     <plugin>
@@ -668,19 +669,6 @@
                                 <goals>
                                     <goal>build</goal>
                                 </goals>
-                                <configuration>
-                                    <images>
-                                        <image>
-                                            <name>${docker.image.name}</name>
-                                            <build>
-                                                <dockerFileDir>${project.build.directory}/docker-resources</dockerFileDir>
-                                                <tags>
-                                                    <tag>${project.version}</tag>
-                                                </tags>
-                                            </build>
-                                        </image>
-                                    </images>
-                                </configuration>
                             </execution>
                             <execution>
                                 <id>push-docker-image</id>
@@ -688,21 +676,21 @@
                                 <goals>
                                     <goal>push</goal>
                                 </goals>
-                                <configuration>
-                                    <images>
-                                        <image>
-                                            <name>${docker.image.name}</name>
-                                            <build>
-                                                <dockerFileDir>${project.build.directory}/docker-resources</dockerFileDir>
-                                                <tags>
-                                                    <tag>${project.version}</tag>
-                                                </tags>
-                                            </build>
-                                        </image>
-                                    </images>
-                                </configuration>
                             </execution>
                         </executions>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>${docker.image.name}</name>
+                                    <build>
+                                        <dockerFileDir>${project.build.directory}/docker-resources</dockerFileDir>
+                                        <tags>
+                                            <tag>${project.version}</tag>
+                                        </tags>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>group.msg.at.cloud.tools</groupId>
@@ -735,6 +723,33 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>group.msg.at.cloud.tools</groupId>
+                        <artifactId>helm-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>helm-package</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>package</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>helm-push</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <chartDirectory>${project.build.directory}/helm-resources/${project.artifactId}</chartDirectory>
+                            <chartPackageDirectory>${project.build.directory}/helm-resources</chartPackageDirectory>
+                            <chartRegistry>${docker.registry.name}</chartRegistry>
+                            <chartRepository>${docker.organization.name}-charts</chartRepository>
+                            <chartVersion>${revision}</chartVersion>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -867,34 +882,24 @@
                             <skipIfEmpty>true</skipIfEmpty>
                         </configuration>
                     </plugin>
-                    <!-- copy resources for helm deployment applying filtering -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>copy-helm-resources</id>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/main/helm/${project.artifactId}</directory>
-                                            <filtering>true</filtering>
-                                        </resource>
-                                    </resources>
-                                    <outputDirectory>${project.build.directory}/helm-resources/${project.artifactId}</outputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!-- install/upgrade helm release before running tests; delete helm release after running tests -->
                     <plugin>
                         <groupId>group.msg.at.cloud.tools</groupId>
                         <artifactId>helm-maven-plugin</artifactId>
                         <executions>
+                            <execution>
+                                <id>helm-pull</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>pull</goal>
+                                </goals>
+                                <configuration>
+                                    <chartRegistry>${docker.registry.name}</chartRegistry>
+                                    <chartRepository>${docker.organization.name}-charts</chartRepository>
+                                    <chartName>${project.artifactId}</chartName>
+                                    <chartVersion>${revision}</chartVersion>
+                                    <chartPackageDirectory>${project.build.directory}/helm-resources</chartPackageDirectory>
+                                </configuration>
+                            </execution>
                             <execution>
                                 <id>helm-install</id>
                                 <phase>pre-integration-test</phase>
@@ -902,11 +907,15 @@
                                     <goal>deploy</goal>
                                 </goals>
                                 <configuration>
-                                    <chartDirectory>${project.build.directory}/helm-resources/${project.artifactId}</chartDirectory>
+                                    <chartPackageDirectory>${project.build.directory}/helm-resources</chartPackageDirectory>
                                     <releaseName>${project.artifactId}</releaseName>
                                     <namespace>${k8s.cluster.namespace}</namespace>
                                     <debug>true</debug>
                                     <timeout>120s</timeout>
+                                    <values>
+                                        <ingress.host>${k8s.ingress.host}</ingress.host>
+                                        <ingress.path>${k8s.ingress.path}</ingress.path>
+                                    </values>
                                 </configuration>
                             </execution>
                         </executions>

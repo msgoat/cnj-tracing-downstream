@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Fixed
 
+## [3.3.0] - 2023-11-09
+### Changed
+- Upgraded to helm-maven-plugin version 5.0.0
+- Now a helm chart is packaged and pushed as an artifact during the commit-stage build
+- Now the helm chart is pulled before deploying during the integration-test-stage build
+
 ## [3.2.0] - 2023-11-07
 ### Changed
 - Consolidated all Maven plugins
