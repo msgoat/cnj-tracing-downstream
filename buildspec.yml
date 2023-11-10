@@ -1,6 +1,8 @@
 version: 0.2
 
 env:
+  variable:
+    CNJ_ARTIFACT_ID: cnj-tracing-downstream
   parameter-store:
     CLOUDTRAIN_EKS_DEPLOY_ENABLED: "CLOUDTRAIN_CODEBUILD_EKS_DEPLOY_ENABLED"
     CLOUDTRAIN_EKS_CLUSTER_NAME: "CLOUDTRAIN_CODEBUILD_EKS_CLUSTER_NAME"
@@ -66,7 +68,7 @@ phases:
       - git config user.name "$CLOUDTRAIN_CODEBUILD_GIT_TAG_USER"
       - git config user.email "$CLOUDTRAIN_CODEBUILD_GIT_TAG_EMAIL"
       - git tag -a $PROJECT_VERSION -m "$CODEBUILD_BUILD_ARN"
-      - git remote set-url origin "https://$GITHUB_TOKEN@github.com/msgoat/iac-tf-aws-cloudtrain-modules.git"
+      - git remote set-url origin "https://$GITHUB_TOKEN@github.com/msgoat/$CNJ_ARTIFACT_ID.git"
       - git push origin HEAD:$VERSION_CHANGELIST $PROJECT_VERSION
   post_build:
     commands:
