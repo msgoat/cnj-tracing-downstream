@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Fixed
 
+## [4.0.1] - 2024-04-05
+### Fixed
+- fixed broken connection to Jaeger collector on Kubernetes
+
 ## [4.0.0] - 2024-04-03
 ### Changed
 - upgraded Spring Boot to version 3.2.4
